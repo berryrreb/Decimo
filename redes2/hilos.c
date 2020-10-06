@@ -45,3 +45,9 @@ int main(int argc, char *argv[])
 }
 
 //gcc acr.c -o hilos -lpthread
+
+//links interesantes
+// https://man7.org/linux/man-pages/man3/pthread_join.3.html
+// https://stackoverflow.com/questions/35403892/creating-threads-in-a-loop
+// https://www.educative.io/edpresso/how-to-create-a-simple-thread-in-c
+// https://www.cs.swarthmore.edu/~bryce/cs31/resources/proc_thread.pdf
