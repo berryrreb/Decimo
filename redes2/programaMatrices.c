@@ -10,7 +10,7 @@ int columnas_A = 0;
 int filas_A = 0;
 int columnas_B = 0;
 int filas_B = 0;
-
+int **A, **B, **C;
 int verificarInput(int input);
 int verificarHilos(int n, int col, int row);
 int verificarMatrices(int col, int row);
@@ -18,7 +18,6 @@ int **crearMatriz(int row, int col);
 int **poblarMatriz(int row, int col, int **Matriz);
 void imprimirMatriz(int row, int col, int **Matriz);
 void *multiplication(void *argHilo);
-
 
 int main(int argc, char *argv[]) {
   if (verificarInput(argc) == -1)
@@ -34,9 +33,9 @@ int main(int argc, char *argv[]) {
   columnas_B = atoi(argv[4]);
   filas_B = atoi(argv[3]);
   int rc = 0;
-  int **A = crearMatriz(filas_A, columnas_A);
-  int **B = crearMatriz(filas_B, columnas_B);
-  int **C = crearMatriz(filas_A, columnas_B);
+  A = crearMatriz(filas_A, columnas_A);
+  B = crearMatriz(filas_B, columnas_B);
+  C = crearMatriz(filas_A, columnas_B);
   int ***Matrices[3];
   pthread_t hilo[numHilos];
   printf("[+] - Se realizara la multiplicacion de matrices con los valores:\n");
@@ -49,15 +48,8 @@ int main(int argc, char *argv[]) {
   A = poblarMatriz(filas_A, columnas_A, A);
   printf("\n[*] - Matriz B poblada\n\n");
   B = poblarMatriz(filas_B, columnas_B, B);
-  
-  Matrices[0] = (int ***)malloc(filas_A * columnas_A * sizeof(int));
-  Matrices[0] = &A;
-  Matrices[1] = (int ***)malloc(filas_B * columnas_B * sizeof(int));
-  Matrices[1] = &B;
-  Matrices[2] = (int ***)malloc(filas_A * columnas_B * sizeof(int));
-  Matrices[2] = &C;
   for (int i = 0; i < numHilos; i++) {
-    rc = pthread_create(&hilo[i], NULL, multiplication, (void *)Matrices);
+    rc = pthread_create(&hilo[i], NULL, multiplication, NULL);
     if (rc != 0) {
       printf("[ERROR] - Error al crear el hilo.\nCodigo de error: %d\n", rc);
       exit(-1);
@@ -66,9 +58,11 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < numHilos; i++) {
     pthread_join(hilo[i], NULL);
   }
-  // free(A);
-  // free(B);
-  // free(C);
+  printf("Resultado: \n");
+  imprimirMatriz(filas_A, columnas_B, C);
+  free(A);
+  free(B);
+  free(C);
 }
 
 int verificarInput(int input) {
@@ -134,23 +128,12 @@ void imprimirMatriz(int row, int col, int **Matriz) {
   printf("\n");
 }
 
-
 void *multiplication(void *argHilo) {
-  int ***Matrices = *(int ****)argHilo;
-  imprimirMatriz(filas_B, columnas_B, Matrices[1]);
   int sum = 0;
-  int **A = Matrices[0];
-  int **B = Matrices[1];
-  int **C = Matrices[2];
-  imprimirMatriz(filas_B, columnas_B, B);
   for (int a = 0; a < columnas_B; a++) {
-    printf("Recorriendo columnas de B con valor a = %d\n", a);
     for (int i = 0; i < filas_A; i++) {
-      printf("Recorriendo filas de A con valor i = %d\n", i);
       sum = 0;
       for (int j = 0; j < columnas_A; j++) {
-        printf("Recorriendo columnas de A con valor j = %d\n", j);
-        printf("Operacion\n%d = %d * %d\n", sum, A[i][j], B[j][a]);
         sum += A[i][j] * B[j][a];
       }
       C[i][a] = sum;
