@@ -11,20 +11,21 @@ int verificarMatrices(int col, int row);
 int **crearMatriz(int row, int col);
 int **poblarMatriz(int row, int col, int **Matriz);
 void imprimirMatriz(int row, int col, int **Matriz);
+void *multiplication (void *argHilo);
 
 int main(int argc, char *argv[]) {
   if (verificarInput(argc) == -1)
     return -1;
+  if (verificarHilos(atoi(argv[5]), atoi(argv[1]), atoi(argv[2])) == -1)
+    return -1;
+  if (verificarMatrices(atoi(argv[1]), atoi(argv[4])) == -1)
+    return -1;
   srand(time(0));
   int numHilos = atoi(argv[5]);
-  int columnas_A = atoi(argv[1]);
-  int filas_A = atoi(argv[2]);
-  int columnas_B = atoi(argv[3]);
-  int filas_B = atoi(argv[4]);
-  if (verificarHilos(numHilos, columnas_A, filas_A) == -1)
-    return -1;
-  if (verificarMatrices(columnas_A, filas_B) == -1)
-    return -1;
+  int columnas_A = atoi(argv[2]);
+  int filas_A = atoi(argv[1]);
+  int columnas_B = atoi(argv[4]);
+  int filas_B = atoi(argv[3]);
   int **A = crearMatriz(filas_A, columnas_A);
   int **B = crearMatriz(filas_B, columnas_B);
   int **C = crearMatriz(filas_A, columnas_B);
@@ -100,24 +101,9 @@ void imprimirMatriz(int row, int col, int **Matriz) {
       }
     }
   }
-  // if (row == 1 & col == 1)
-  //   printf("| %d |\n", Matriz[0][0]);
-  // else {
-  //   for (int i = 0; i < row; i++) {
-  //     for (int j = 0; j < col; j++) {
-  //       if(col == 1) printf("| %d |\n", Matriz[i][j]);
-  //       else if (j == 0)
-  //         printf("| %d\t", Matriz[i][j]);
+}
 
-  //       else if (j == col - 1)
-  //         printf("\t%d |\n", Matriz[i][j]);
+void *multiplication (void *argHilo){
+  int i;
 
-  //       else
-  //         printf(" %d ", Matriz[i][j]);
-  //     }
-  //     if (i == row - 1) {
-  //       printf("\n");
-  //     }
-  //   }
-  // }
 }
