@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
   printf("\n[*] - Matriz B poblada\n\n");
   B = poblarMatriz(filas_B, columnas_B, B);
   for (int i = 0; i < numHilos; i++) {
-    rc = pthread_create(&hilo[i], NULL, multiplication, NULL);
+    rc = pthread_create(&hilo[i], NULL, multiplication, (void *) i);
     if (rc != 0) {
       printf("[ERROR] - Error al crear el hilo.\nCodigo de error: %d\n", rc);
       exit(-1);
@@ -129,6 +129,8 @@ void imprimirMatriz(int row, int col, int **Matriz) {
 }
 
 void *multiplication(void *argHilo) {
+  int id = (int) argHilo;
+  printf("id: %d\n\n", id);
   int sum = 0;
   for (int a = 0; a < columnas_B; a++) {
     for (int i = 0; i < filas_A; i++) {
