@@ -5,15 +5,17 @@ import sys
 from shutil import copyfile
 
 def main():
-    print("Programa A Practica 1")
+    print("***\tPrograma A Practica 1\t***")
     copyFiles()
 
 def copyFiles():
     flag_dir = validateIntInput("1.-Copiar imagenes desde directorio actual\n2.-Copiar imagenes desde otro directorio\n")
     if(flag_dir == 2):
         filelist= verifyNumImages(flag_dir)
+        print('[+] - Copiando imagenes ...')
     elif(flag_dir == 1):
         filelist= verifyNumImages(flag_dir)
+        print('[+] - Copiando imagenes ...')
 
 def ruleImage(file):
     if(file.endswith('.png') or file.endswith('.jpg') or file.endswith('.jpeg')): 
